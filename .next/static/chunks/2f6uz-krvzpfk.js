@@ -1,0 +1,1 @@
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,29378,i=>{i.q("/_next/static/media/garvit-office-comic__1_.1yafy3xvxbhpi.jpg")}]);

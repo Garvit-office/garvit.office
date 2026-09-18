@@ -1,0 +1,10 @@
+{
+  "description": "Explore an immersive comic-noir portfolio showcasing Garvit Chawla's work, featuring interactive elements and instant responses to user inquiries.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
