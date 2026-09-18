@@ -2,7 +2,7 @@
 
 import { FormEvent, PointerEvent, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import officeImage from "./imports/garvit-office-comic__1_.jpg";
+import officeImage from "./imports/garvit-office-comic__1_.png";
 
 const officeImageUrl =
   typeof officeImage === "string"
