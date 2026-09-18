@@ -1,0 +1,194 @@
+/* Container positioned exactly over the chair in the office scene */
+.character-component-wrapper {
+  position: absolute;
+  z-index: 6;
+  left: 31%;
+  top: 14%;
+  width: 38%;
+  height: 58%;
+  pointer-events: none;
+  transform-origin: 50% 65%;
+  animation: characterBreathe 5s ease-in-out infinite;
+}
+
+/* Background slice or character portrait asset mask */
+.character-base-artwork {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  mask-image: radial-gradient(circle at 50% 40%, black 55%, transparent 85%);
+  -webkit-mask-image: radial-gradient(circle at 50% 40%, black 55%, transparent 85%);
+}
+
+/* Articulated facial features */
+.character-expression-layer {
+  position: absolute;
+  inset: 0;
+}
+
+.part-eyes {
+  position: absolute;
+  left: 44%;
+  top: 31%;
+  width: 12%;
+  height: 2%;
+  border-top: 1px solid rgba(244, 210, 161, 0.6);
+  opacity: 0.8;
+}
+
+.part-mouth {
+  position: absolute;
+  left: 47.5%;
+  top: 42%;
+  width: 5%;
+  height: 1.2%;
+  border-radius: 50%;
+  background: rgba(47, 13, 12, 0.95);
+  box-shadow: 0 0 6px rgba(237, 162, 113, 0.4);
+}
+
+/* Action States Triggered via Props */
+.reaction-talking .part-mouth {
+  animation: mouthTalkSync 0.22s steps(2) infinite;
+}
+
+.reaction-drinking .drink-arm {
+  opacity: 1;
+  animation: armReachDrink 2.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.reaction-writing {
+  animation: characterWriteMotion 1.2s ease-in-out infinite alternate;
+}
+
+/* Comic Action Callout Bubble */
+.comic-action-tag {
+  position: absolute;
+  top: -2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(236, 223, 194, 0.95);
+  color: #17130d;
+  font-family: "Cinzel", serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid #17130d;
+  box-shadow: 2px 3px 0 rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+  animation: popIn 0.3s ease-out;
+}
+
+/* Keyframe Animations */
+@keyframes characterBreathe {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(0.5%) scale(1.002); }
+}
+
+@keyframes mouthTalkSync {
+  0%, 100% { transform: scaleY(0.4); }
+  50% { transform: scaleY(1.8); }
+}
+
+@keyframes characterWriteMotion {
+  from { transform: translateY(0) rotate(0deg); }
+  to { transform: translateY(0.4%) rotate(-0.4deg); }
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: translateX(-50%) scale(0.8); }
+  to { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+/* Isolated Character Component Layer */
+.character-component-wrapper {
+  position: absolute;
+  z-index: 6;
+  left: 31%;
+  top: 14%;
+  width: 38%;
+  height: 58%;
+  pointer-events: none;
+  transform-origin: 50% 65%;
+  animation: characterBreathe 5s ease-in-out infinite;
+}
+
+.character-portrait-art {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  mask-image: radial-gradient(circle at 50% 40%, black 58%, transparent 88%);
+  -webkit-mask-image: radial-gradient(circle at 50% 40%, black 58%, transparent 88%);
+}
+
+.character-facial-articulation {
+  position: absolute;
+  inset: 0;
+}
+
+.part-eyes {
+  position: absolute;
+  left: 44%;
+  top: 31%;
+  width: 12%;
+  height: 2%;
+  border-top: 1px solid rgba(244, 210, 161, 0.6);
+  opacity: 0.8;
+}
+
+.part-mouth {
+  position: absolute;
+  left: 47.5%;
+  top: 42%;
+  width: 5%;
+  height: 1.2%;
+  border-radius: 50%;
+  background: rgba(47, 13, 12, 0.95);
+  box-shadow: 0 0 6px rgba(237, 162, 113, 0.4);
+}
+
+/* Action States */
+.reaction-talking .part-mouth {
+  animation: mouthTalkSync 0.22s steps(2) infinite;
+}
+
+.reaction-drinking .drink-arm {
+  opacity: 1;
+  animation: armReachDrink 2.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.reaction-writing {
+  animation: characterWriteMotion 1.2s ease-in-out infinite alternate;
+}
+
+.comic-bubble-action {
+  position: absolute;
+  top: -2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(236, 223, 194, 0.95);
+  color: #17130d;
+  font-family: "Cinzel", serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid #17130d;
+  box-shadow: 2px 3px 0 rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+}
+
+@keyframes characterBreathe {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(0.5%) scale(1.002); }
+}
+
+@keyframes mouthTalkSync {
+  0%, 100% { transform: scaleY(0.4); }
+  50% { transform: scaleY(1.8); }
+}
+
+@keyframes characterWriteMotion {
+  from { transform: translateY(0) rotate(0deg); }
+  to { transform: translateY(0.4%) rotate(-0.4deg); }
+}

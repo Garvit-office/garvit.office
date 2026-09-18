@@ -10,7 +10,51 @@ const officeImageUrl =
     : (officeImage as unknown as { src: string }).src;
 
 type Panel = "contact" | "dossier" | "skills" | "journey" | "global" | null;
-type Reaction = "idle" | "talking" | "drinking" | "writing" | "thinking" | "confident";
+type ReactionState = "idle" | "talking" | "drinking" | "writing" | "thinking" | "confident";
+
+// --- SELF-CONTAINED CHARACTER COMPONENT ---
+interface CharacterProps {
+  reaction: ReactionState;
+  isWarm: boolean;
+}
+
+function CharacterAvatar({ reaction, isWarm }: CharacterProps) {
+  return (
+    <motion.div
+      className={`character-component-wrapper reaction-${reaction} ${isWarm ? "warm-lit" : ""}`}
+      animate={
+        reaction === "drinking"
+          ? { scale: 1.035, y: -6, rotate: 0.4 }
+          : reaction === "confident"
+          ? { scale: 1.02, y: -3 }
+          : { scale: 1, y: 0, rotate: 0 }
+      }
+      transition={{ type: "spring", stiffness: 100, damping: 15 }}
+      aria-hidden="true"
+    >
+      <div className="character-portrait-art" />
+      <div className="character-facial-articulation">
+        <span className="part-eyes" />
+        <span className="part-mouth" />
+      </div>
+      <div className="character-props-articulation">
+        <div className="drink-arm">
+          <div className="drink-hand">
+            <div className="drink-glass">
+              <i className="liquid-surface" />
+            </div>
+          </div>
+        </div>
+      </div>
+      {reaction === "drinking" && (
+        <div className="comic-bubble-action">*Sipping Reserve*</div>
+      )}
+      {reaction === "writing" && (
+        <div className="comic-bubble-action">*Logging Details*</div>
+      )}
+    </motion.div>
+  );
+}
 
 const responses = {
   skills:
@@ -63,7 +107,7 @@ export default function App() {
   const [warm, setWarm] = useState(false);
   const [panel, setPanel] = useState<Panel>(null);
   const [sipping, setSipping] = useState(false);
-  const [reaction, setReaction] = useState<Reaction>("idle");
+  const [reaction, setReaction] = useState<ReactionState>("idle");
   const [typedReply, setTypedReply] = useState("");
   const [camera, setCamera] = useState({ x: 0, y: 0 });
   const [discovery, setDiscovery] = useState("Look around. The office keeps good records.");
@@ -89,7 +133,7 @@ export default function App() {
       setTypedReply(reply.slice(0, index));
       if (index >= reply.length) {
         window.clearInterval(typingTimer.current);
-        setReaction((current) => (current === "drinking" ? current : "idle"));
+        setReaction((current: ReactionState) => (current === "drinking" ? current : "idle"));
       }
     }, 18);
     return () => window.clearInterval(typingTimer.current);
@@ -139,7 +183,7 @@ export default function App() {
     }, 2600);
   }
 
-  function react(message: string, nextReaction: Reaction = "thinking") {
+  function react(message: string, nextReaction: ReactionState = "thinking") {
     setDiscovery(message);
     setReply(message);
     setReaction(nextReaction);
@@ -174,13 +218,9 @@ export default function App() {
         <div className="grain" />
         <div className="smoke smoke-one" />
         <div className="smoke smoke-two" />
-        <div className={`character-layer reaction-${reaction}`} aria-hidden="true">
-          <span className="character-eyes" />
-          <span className="character-mouth" />
-          <span className="drink-arm" />
-          <span className="drink-hand" />
-          <span className="drink-glass"><i /></span>
-        </div>
+
+        {/* Character Component rendered inline */}
+        <CharacterAvatar reaction={reaction} isWarm={warm} />
 
         <header className="topbar">
           <div className="monogram">GC</div>
@@ -312,70 +352,70 @@ export default function App() {
               aria-modal="true"
               aria-labelledby="modal-title"
             >
-            <button
-              className="modal-close"
-              onClick={() => setPanel(null)}
-              aria-label="Close"
-            >
-              CLOSE ×
-            </button>
+              <button
+                className="modal-close"
+                onClick={() => setPanel(null)}
+                aria-label="Close"
+              >
+                CLOSE ×
+              </button>
 
-            {panel === "contact" ? (
-              <>
-                <p className="eyebrow">THE SECURE LINE</p>
-                <h2 id="modal-title">Let&apos;s talk business.</h2>
-                <p className="modal-intro">
-                  Have an ambitious idea? Put it on the table. The first
-                  conversation is always off the record.
-                </p>
-                <div className="contact-list">
-                  <div><span>EMAIL</span>Use the contact details supplied with your application.</div>
-                  <div><span>AVAILABILITY</span>Software engineering, AI projects, and thoughtful collaborations.</div>
-                </div>
-                <p className="fine-print">
-                  AVAILABLE FOR SELECT FREELANCE &amp; PRODUCT COLLABORATIONS
-                </p>
-              </>
-            ) : panel === "skills" ? (
-              <>
-                <p className="eyebrow">THE BOOKS KEEP SECRETS</p>
-                <h2 id="modal-title">Technology Stack</h2>
-                <p className="modal-intro">Java, Python, JavaScript, React, Next.js, Spring Boot, Node.js, MongoDB, MySQL, PostgreSQL, LangGraph, RAG, Ollama, and LLM systems.</p>
-              </>
-            ) : panel === "journey" ? (
-              <>
-                <p className="eyebrow">THE BUILDER&apos;S JOURNEY</p>
-                <h2 id="modal-title">Always moving forward.</h2>
-                <p className="modal-intro">From full-stack systems to AI assistants and interactive experiences, the work follows curiosity wherever it leads.</p>
-              </>
-            ) : panel === "global" ? (
-              <>
-                <p className="eyebrow">GLOBAL MINDSET</p>
-                <h2 id="modal-title">Build beyond the room.</h2>
-                <p className="modal-intro">Good software travels. The goal is to make complex ideas feel immediate, useful, and human wherever they land.</p>
-              </>
-            ) : (
-              <>
-                <p className="eyebrow">CONFIDENTIAL · CASE FILE 24-07</p>
-                <h2 id="modal-title">About Me &amp; Projects</h2>
-                <p className="modal-intro">
-                  I design and build memorable digital products where strong
-                  ideas, elegant systems, and precise execution meet.
-                </p>
-                <div className="project-grid">
-                  {projects.map((project) => (
-                    <article key={project.number}>
-                      <div className="project-meta">
-                        <span>{project.number}</span>
-                        {project.type}
-                      </div>
-                      <h3>{project.title}</h3>
-                      <p>{project.copy}</p>
-                    </article>
-                  ))}
-                </div>
-              </>
-            )}
+              {panel === "contact" ? (
+                <>
+                  <p className="eyebrow">THE SECURE LINE</p>
+                  <h2 id="modal-title">Let&apos;s talk business.</h2>
+                  <p className="modal-intro">
+                    Have an ambitious idea? Put it on the table. The first
+                    conversation is always off the record.
+                  </p>
+                  <div className="contact-list">
+                    <div><span>EMAIL</span>Use the contact details supplied with your application.</div>
+                    <div><span>AVAILABILITY</span>Software engineering, AI projects, and thoughtful collaborations.</div>
+                  </div>
+                  <p className="fine-print">
+                    AVAILABLE FOR SELECT FREELANCE &amp; PRODUCT COLLABORATIONS
+                  </p>
+                </>
+              ) : panel === "skills" ? (
+                <>
+                  <p className="eyebrow">THE BOOKS KEEP SECRETS</p>
+                  <h2 id="modal-title">Technology Stack</h2>
+                  <p className="modal-intro">Java, Python, JavaScript, React, Next.js, Spring Boot, Node.js, MongoDB, MySQL, PostgreSQL, LangGraph, RAG, Ollama, and LLM systems.</p>
+                </>
+              ) : panel === "journey" ? (
+                <>
+                  <p className="eyebrow">THE BUILDER&apos;S JOURNEY</p>
+                  <h2 id="modal-title">Always moving forward.</h2>
+                  <p className="modal-intro">From full-stack systems to AI assistants and interactive experiences, the work follows curiosity wherever it leads.</p>
+                </>
+              ) : panel === "global" ? (
+                <>
+                  <p className="eyebrow">GLOBAL MINDSET</p>
+                  <h2 id="modal-title">Build beyond the room.</h2>
+                  <p className="modal-intro">Good software travels. The goal is to make complex ideas feel immediate, useful, and human wherever they land.</p>
+                </>
+              ) : (
+                <>
+                  <p className="eyebrow">CONFIDENTIAL · CASE FILE 24-07</p>
+                  <h2 id="modal-title">About Me &amp; Projects</h2>
+                  <p className="modal-intro">
+                    I design and build memorable digital products where strong
+                    ideas, elegant systems, and precise execution meet.
+                  </p>
+                  <div className="project-grid">
+                    {projects.map((project) => (
+                      <article key={project.number}>
+                        <div className="project-meta">
+                          <span>{project.number}</span>
+                          {project.type}
+                        </div>
+                        <h3>{project.title}</h3>
+                        <p>{project.copy}</p>
+                      </article>
+                    ))}
+                  </div>
+                </>
+              )}
             </motion.section>
           </motion.div>
         )}
